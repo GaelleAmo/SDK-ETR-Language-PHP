@@ -1,45 +1,45 @@
 <?php
 
-// --------------- DÉCLARATION DES VARIABLES ---------------
+// --------------- DÃ‰CLARATION DES VARIABLES ---------------
 
-$pbx_site = 'votre n° de site';															//variable de test 9999999
-$pbx_rang = 'votre n° de rang';															//variable de test 95
-$pbx_identifiant = 'votre n° d identifiant site';										//variable de test 123456789
+$pbx_site = 'votre nÂ° de site';															//variable de test 9999999
+$pbx_rang = 'votre nÂ° de rang';															//variable de test 95
+$pbx_identifiant = 'votre nÂ° d identifiant site';										//variable de test 123456789
 $pbx_total = 'votre montant';															//variable de test 200
 // Suppression des points ou virgules dans le montant						
 	$pbx_total = str_replace(",", "", $pbx_total);
 	$pbx_total = str_replace(".", "", $pbx_total);
 
-$pbx_cmd = 'votre n° de commande';														//variable de test cmd_test1
+$pbx_cmd = 'votre nÂ° de commande';														//variable de test cmd_test1
 $pbx_porteur = 'email de l acheteur';													//variable de test test@test.fr
 
-// Paramétrage de l'url de retour back office site (notification de paiement IPN) :
+// ParamÃ©trage de l'url de retour back office site (notification de paiement IPN) :
 $pbx_repondre_a = 'http://www.votre-site.extention/page-de-back-office-site';
 
-// Paramétrage des données retournées via l'IPN :
+// ParamÃ©trage des donnÃ©es retournÃ©es via l'IPN :
 $pbx_retour = 'Mt:M;Ref:R;Auto:A;Erreur:E';
 
-// Paramétrage des urls de redirection navigateur client après paiement :
+// ParamÃ©trage des urls de redirection navigateur client aprÃ¨s paiement :
 $pbx_effectue = 'http://www.votre-site.extention/accepte.php';
 $pbx_annule = 'http://www.votre-site.extention/annule.php';
 $pbx_refuse = 'http://www.votre-site.extention/refuse.php';
 
-// On récupère la date au format ISO-8601 :
+// On rÃ©cupÃ¨re la date au format ISO-8601 :
 $dateTime = date("c");
 
-// Nombre de produit envoyé dans PBX_SHOPPINGCART :
+// Nombre de produit envoyÃ© dans PBX_SHOPPINGCART :
 $pbx_nb_produit = 'nombre de produit dans le panier';									//variable de test 5
 // Construction de PBX_SHOPPINGCART :
 $pbx_shoppingcart = "<?xml version=\"1.0\" encoding=\"utf-8\"?><shoppingcart><total><totalQuantity>".$pbx_nb_produit."</totalQuantity></total></shoppingcart>";
 
-// Valeurs envoyées dans PBX_BILLING :
+// Valeurs envoyÃ©es dans PBX_BILLING :
 $pbx_prenom_fact = 'prenom de l utilisateur de facturation';							//variable de test Jean-Marie
 $pbx_nom_fact = 'nom de l utilisateur de facturation';									//variable de test Thomson
 $pbx_adresse1_fact = 'ligne1 de l adresse de facturation';								//variable de test 1 rue de Paris
 $pbx_adresse2_fact = 'ligne2 de l adresse de facturation';								//variable de test <vide>
 $pbx_zipcode_fact = 'code postal de l adresse de facturation';							//variable de test 75001
 $pbx_city_fact = 'ville de l adresse de facturation';									//variable de test Paris
-$pbx_country_fact = 'code pays iso-3166-1 numérique de l adresse de facturation';		//variable de test 250 (pour la France)
+$pbx_country_fact = 'code pays iso-3166-1 numÃ©rique de l adresse de facturation';		//variable de test 250 (pour la France)
 // Construction de PBX_BILLING :
 $pbx_billing = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Billing><Address><FirstName>".$pbx_prenom_fact."</FirstName>".
 				"<LastName>".$pbx_nom_fact."</LastName><Address1>".$pbx_adresse1_fact."</Address1>".
@@ -47,26 +47,26 @@ $pbx_billing = "<?xml version=\"1.0\" encoding=\"utf-8\"?><Billing><Address><Fir
 				"<City>".$pbx_city_fact."</City><CountryCode>".$pbx_country_fact."</CountryCode>".
 				"</Address></Billing>";
 
-// --------------- SÉLÉCTION DE L'ENVIRRONEMENT ---------------
+// --------------- SÃ‰LÃ‰CTION DE L'ENVIRRONEMENT ---------------
 // Recette (paiements de test)  :
 		$urletrans ="https://recette-tpeweb.e-transactions.fr/php/";
 
-// Production (paiements réels) :
+// Production (paiements rÃ©els) :
 	// URL principale :
 		// $urletrans ="https://tpeweb.e-transactions.fr/php/";
 	// URL secondaire :
 		// $urletrans ="https://tpeweb1.e-transactions.fr/php/";
 
-// --------------- RÉCUPÉRATION DE LA CLÉ HMAC ---------------
-// Connection à la base de données
+// --------------- RÃ‰CUPÃ‰RATION DE LA CLÃ‰ HMAC ---------------
+// Connection Ã  la base de donnÃ©es
 // mysql_connect...
-// On récupère la clé secrète HMAC (stockée dans une base de données par exemple) et que l’on renseigne dans la variable $hmackey;
+// On rÃ©cupÃ¨re la clÃ© secrÃ¨te HMAC (stockÃ©e dans une base de donnÃ©es par exemple) et que lâ€™on renseigne dans la variable $hmackey;
 // $hmackey = '4642EDBBDFF9790734E673A9974FC9DD4EF40AA2929925C40B3A95170FF5A578E7D2579D6074E28A78BD07D633C0E72A378AD83D4428B0F3741102B69AD1DBB0';
-$hmackey = 'votre clé générée depuis le back office Vision';
+$hmackey = 'votre clÃ© gÃ©nÃ©rÃ©e depuis le back office Vision';
 
 // --------------- TRAITEMENT DES VARIABLES ---------------
 
-// On crée la chaîne à hacher sans URLencodage
+// On crÃ©e la chaÃ®ne Ã  hacher sans URLencodage
 $msg = "PBX_SITE=".$pbx_site.
 "&PBX_RANG=".$pbx_rang.
 "&PBX_IDENTIFIANT=".$pbx_identifiant.
@@ -85,21 +85,21 @@ $msg = "PBX_SITE=".$pbx_site.
 "&PBX_BILLING=".$pbx_billing;
 // echo $msg;
 
-// Si la clé est en ASCII, On la transforme en binaire
+// Si la clÃ© est en ASCII, On la transforme en binaire
 $binKey = pack("H*", $hmackey);
 
-// On calcule l’empreinte (à renseigner dans le paramètre PBX_HMAC) grâce à la fonction hash_hmac et //
-// la clé binaire
-// On envoi via la variable PBX_HASH l'algorithme de hachage qui a été utilisé (SHA512 dans ce cas)
-// Pour afficher la liste des algorithmes disponibles sur votre environnement, décommentez la ligne //
+// On calcule lâ€™empreinte (Ã  renseigner dans le paramÃ¨tre PBX_HMAC) grÃ¢ce Ã  la fonction hash_hmac et //
+// la clÃ© binaire
+// On envoi via la variable PBX_HASH l'algorithme de hachage qui a Ã©tÃ© utilisÃ© (SHA512 dans ce cas)
+// Pour afficher la liste des algorithmes disponibles sur votre environnement, dÃ©commentez la ligne //
 // suivante
 // print_r(hash_algos());
 $hmac = strtoupper(hash_hmac('sha512', $msg, $binKey));
 
-// La chaîne sera envoyée en majuscule, d'où l'utilisation de strtoupper()
-// On crée le formulaire à envoyer
-// ATTENTION : l'ordre des champs dans le formulaire est extrêmement important, il doit
-// correspondre exactement à l'ordre des champs dans la chaîne hachée.
+// La chaÃ®ne sera envoyÃ©e en majuscule, d'oÃ¹ l'utilisation de strtoupper()
+// On crÃ©e le formulaire Ã  envoyer
+// ATTENTION : l'ordre des champs dans le formulaire est extrÃªmement important, il doit
+// correspondre exactement Ã  l'ordre des champs dans la chaÃ®ne hachÃ©e.
 ?>
 
 <!------------------ ENVOI DES INFORMATIONS A e-Transactions (Formulaire) ------------------>
